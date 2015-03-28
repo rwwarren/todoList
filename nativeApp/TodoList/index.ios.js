@@ -11,76 +11,71 @@ var {
   Text,
   View,
   ListView,
+  NavigatorIOS,
 } = React;
 
 var API_URL = "http://todo.localhost/";
 var PARAMS = "?type=getAll&user=asdf";
 var REQUEST_URL = API_URL + PARAMS;
+var HomePage = require('./HomePage');
 
 var TodoList = React.createClass({
   render: function() {
-    if (!this.state.loaded) {
-      return <Text>asdf</Text>;
-    }
-    //return (
-    //  <View style={styles.container}>
-    //    <Text style={styles.welcome}>
-    //      Welcome to React Native Start!
-    //    </Text>
-    //    <Text style={styles.instructions}>
-    //      To get started, edit index.ios.js{'\n'}
-    //      Press Cmd+R to reload
-    //    </Text>
-    //  </View>
-    //);
+    //if (!this.state.loaded) {
+    //  return <Text>asdf</Text>;
+    //}
+    return(
+      <NavigatorIOS
+        style={styles.container}
+        initialRoute={{
+          title: 'Home Page',
+          component: HomePage,
+      }}/>
+     );
+//    return (
+//      <ListView
+//        dataSource={this.state.dataSource}
+//        renderRow={this.renderTodo}
+//        style={styles.listView}
+//      />
+//    );
+  },
+// getInitialState: function() {
+//    return {
+//      dataSource: new ListView.DataSource({
+//          rowHasChanged: (row1, row2) => row1 !== row2,
+//       }),
+//       loaded: false,
+//    };
+//  },
+//  componentDidMount: function() {
+//    this.fetchData();
+//  },
+//  fetchData: function() {
+//    fetch(REQUEST_URL)
+//      .then((response) => response.json())
+//      .then((responseData) => {
+//        this.setState({
+//          dataSource: this.state.dataSource.cloneWithRows(responseData),
+//          loaded: true,
+//        });
+//      })
+//      .done();
+//  },
+//  renderTodo: function(todo) {
+//    return (
 //      <View style={styles.container}>
-//        <Text>test</Text>
-//        <Text>{responseData}</Text>
+//        <View style={styles.todoElement}>
+//          <Text>{"\{"}</Text>
+//          <Text style={styles.tabbed}>User: {todo.user}</Text>
+//          <Text style={styles.tabbed}>Status: {todo.status}</Text>
+//          <Text style={styles.tabbed}>Description: {todo.description}</Text>
+//          <Text style={styles.tabbed}>Due Date: {todo.due_date}</Text>
+//          <Text>{"\}"}</Text>
+//        </View>
 //      </View>
-    return (
-      <ListView
-        dataSource={this.state.dataSource}
-        renderRow={this.renderTodo}
-        style={styles.listView}
-      />
-    );
-  },
- getInitialState: function() {
-    return {
-      dataSource: new ListView.DataSource({
-          rowHasChanged: (row1, row2) => row1 !== row2,
-       }),
-       loaded: false,
-    };
-  },
-  componentDidMount: function() {
-    this.fetchData();
-  },
-  fetchData: function() {
-    fetch(REQUEST_URL)
-      .then((response) => response.json())
-      .then((responseData) => {
-        this.setState({
-          dataSource: this.state.dataSource.cloneWithRows(responseData),
-          loaded: true,
-        });
-      })
-      .done();
-  },
-  renderTodo: function(todo) {
-    return (
-      <View style={styles.container}>
-        <View style={styles.todoElement}>
-          <Text>{"\{"}</Text>
-          <Text style={styles.tabbed}>User: {todo.user}</Text>
-          <Text style={styles.tabbed}>Status: {todo.status}</Text>
-          <Text style={styles.tabbed}>Description: {todo.description}</Text>
-          <Text style={styles.tabbed}>Due Date: {todo.due_date}</Text>
-          <Text>{"\}"}</Text>
-        </View>
-      </View>
-    );
-  },
+//    );
+//  },
 });
 
 var styles = StyleSheet.create({
