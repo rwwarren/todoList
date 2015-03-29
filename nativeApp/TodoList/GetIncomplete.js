@@ -13,7 +13,8 @@ var {
 } = React;
 
 var API_URL = "http://todo.localhost/";
-var PARAMS = "?type=getIncomplete&user=asdf";
+var PARAMS = "?type=getIncomplete&user=";
+//var PARAMS = "?type=getIncomplete&user=asdf";
 var REQUEST_URL = API_URL + PARAMS;
 
 var GetIncomplete = React.createClass({
@@ -44,7 +45,7 @@ var GetIncomplete = React.createClass({
     this.fetchData();
   },
   fetchData: function() {
-    fetch(REQUEST_URL)
+    fetch(REQUEST_URL + this.props.getUser)
       .then((response) => response.json())
       .then((responseData) => {
         this.setState({

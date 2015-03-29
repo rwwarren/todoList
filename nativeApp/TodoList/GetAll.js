@@ -10,10 +10,12 @@ var {
   ListView,
   NavigatorIOS,
   Component,
+  TouchableHighlight,
 } = React;
 
 var API_URL = "http://todo.localhost/";
-var PARAMS = "?type=getAll&user=asdf";
+var PARAMS = "?type=getAll&user=";
+//var PARAMS = "?type=getAll&user=asdf";
 var REQUEST_URL = API_URL + PARAMS;
 
 var GetAll = React.createClass({
@@ -24,6 +26,12 @@ var GetAll = React.createClass({
     //  </View>
     //);
   //},
+//      <Text style={styles.container}>
+//      {this.state.getallUser}
+//      </Text>
+//      <Text style={styles.container}>
+//      {this.props.getallUser}
+//      </Text>
     return (
       <ListView
         dataSource={this.state.dataSource}
@@ -33,6 +41,7 @@ var GetAll = React.createClass({
     );
 },
  getInitialState: function() {
+//       getallUser: this.props.getallUser
     return {
       dataSource: new ListView.DataSource({
           rowHasChanged: (row1, row2) => row1 !== row2,
@@ -44,7 +53,7 @@ var GetAll = React.createClass({
     this.fetchData();
   },
   fetchData: function() {
-    fetch(REQUEST_URL)
+    fetch(REQUEST_URL + this.props.getUser)
       .then((response) => response.json())
       .then((responseData) => {
         this.setState({
@@ -57,6 +66,7 @@ var GetAll = React.createClass({
   renderTodo: function(todo) {
     return (
       <View style={styles.container}>
+        <TouchableHighlight onPress={this.popup}>
         <View style={styles.todoElement}>
           <Text>{"\{"}</Text>
           <Text style={styles.tabbed}>User: {todo.user}</Text>
@@ -65,9 +75,17 @@ var GetAll = React.createClass({
           <Text style={styles.tabbed}>Due Date: {todo.due_date}</Text>
           <Text>{"\}"}</Text>
         </View>
+        </TouchableHighlight>
       </View>
     );
   },
+  popup: function(){
+    return (
+      <View style={styles.container}>
+        <Text style={styles.container}>Testing</Text>
+      </View>
+    );
+  }
 
 });
 

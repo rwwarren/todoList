@@ -105,8 +105,12 @@ function createTask(){
       $results = $stmt->fetch();
       $stmt->free_result();
       $stmt->close();
-      echo "results: <br>";
-      print_r($results);
+      //echo "results: <br>";
+      //print_r($results);
+      $result = array("Results" => array("Status" => "Creation Complete", "Username" => $user, "Task Status" => $status, "Description" => $desc, "Due Date" => $due));
+      header("HTTP/1.0 200 Success");
+      header('Content-Type: application/json');
+      echo json_encode($result, true);
 
 }
 
@@ -136,8 +140,11 @@ function changeStatus(){
       ////$results = $stmt->fetch();
       $stmt->free_result();
       $stmt->close();
-      echo "done";
-      //echo json_encode($result, true);
+      //echo "done";
+      header("HTTP/1.0 200 Success");
+      header('Content-Type: application/json');
+      $result = array("Status" => "Done", "Task" => "asdf????", "Task Status" => "Complete>??");
+      echo json_encode($result, true);
       //echo json_encode(array("user" => $user, "status" => $status, "description" => $desc, "due_date" => $due), true);
 
 }
