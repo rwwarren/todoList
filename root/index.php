@@ -26,10 +26,10 @@ function getAll(){
       $mysqli = new mysqli("localhost", "write", "PASSWORD", "TasksDB");
       //$stmt = $this->mysqli->prepare("Select ID from Users where Username = ? and AuthyID = ? and IsActive = 1 LIMIT 1");
       //incomplete status then soonest due date
-      $stmt = $mysqli->prepare("SELECT user, status, description, due_date from TodoList where user = ? ORDER BY status DESC, DATE(due_date) ASC");
+      $stmt = $mysqli->prepare("SELECT id, user, status, description, due_date from TodoList where user = ? ORDER BY status DESC, DATE(due_date) ASC");
       $stmt->bind_param('s', $user);
       $stmt->execute();
-      $stmt->bind_result($user, $status, $desc, $due);
+      $stmt->bind_result($id, $user, $status, $desc, $due);
       //$results = $stmt->fetch();
       //$stmt->free_result();
       //$stmt->close();
@@ -40,7 +40,7 @@ function getAll(){
       $result = array();
       $i = 0;
       while ($stmt->fetch()) {
-        $result[$i] = array("user" => $user, "status" => $status, "description" => $desc, "due_date" => $due);
+        $result[$i] = array("id" => $id, "user" => $user, "status" => $status, "description" => $desc, "due_date" => $due);
         //$result[$i] = $username;
         $i++;
       }
@@ -57,11 +57,11 @@ function getIncomplete(){
       $user = $_GET['user'];
       $mysqli = new mysqli("localhost", "write", "PASSWORD", "TasksDB");
       //$stmt = $this->mysqli->prepare("Select ID from Users where Username = ? and AuthyID = ? and IsActive = 1 LIMIT 1");
-      $stmt = $mysqli->prepare("SELECT user, status, description, due_date from TodoList where user = ? and status = 'Incomplete' ORDER BY DATE(due_date) ASC");
+      $stmt = $mysqli->prepare("SELECT id, user, status, description, due_date from TodoList where user = ? and status = 'Incomplete' ORDER BY DATE(due_date) ASC");
       //$stmt = $mysqli->prepare("SELECT user, status, description, due_date from TodoList where user = ? and status = 'Incomplete' ORDER BY due_date DESC");
       $stmt->bind_param('s', $user);
       $stmt->execute();
-      $stmt->bind_result($user, $status, $desc, $due);
+      $stmt->bind_result($id, $user, $status, $desc, $due);
       //$results = $stmt->fetch();
       //$stmt->free_result();
       //$stmt->close();
@@ -72,7 +72,7 @@ function getIncomplete(){
       $result = array();
       $i = 0;
       while ($stmt->fetch()) {
-        $result[$i] = array("user" => $user, "status" => $status, "description" => $desc, "due_date" => $due);
+        $result[$i] = array("id" => $id, "user" => $user, "status" => $status, "description" => $desc, "due_date" => $due);
         //$result[$i] = $username;
         $i++;
       }
