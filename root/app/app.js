@@ -59,9 +59,8 @@ var TodoApp = React.createClass({
       };
     },
     componentDidMount: function(){
-        //localStorage.setItem("test", "asdf");
         var storedName = localStorage.getItem(LOCAL_KEY);
-        if(storedName.length > 0){
+        if(storedName !== null && storedName.length > 0){
           this.getAll(storedName);
         }
     },
@@ -93,12 +92,6 @@ var TodoApp = React.createClass({
       });
     },
     render: function() {
-        //localStorage.setItem("test", "asdf");
-        //var storedName = localStorage.getItem("test");
-        //if(!this.state.isLoaded && storedName.length > 0) {
-        //  console.log(storedName);
-        //  this.getAll(storedName);
-        //} else if(!this.state.isLoaded){
         if(!this.state.isLoaded){
           return (
             <div>
