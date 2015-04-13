@@ -24,10 +24,6 @@ var TodoItem = React.createClass({
     };
   },
   render: function() {
-          //<p>
-          //  Hello, world! {this.state.name}
-          //</p>
-            //Hello, world! {this.props.info}
       return (
         <div>
           <p>
@@ -53,7 +49,6 @@ var TodoItem = React.createClass({
 var TodoApp = React.createClass({
     getInitialState: function(){
       return {
-        name: "Ryan",
         results: "",
         isLoaded: false
       };
@@ -92,37 +87,51 @@ var TodoApp = React.createClass({
       });
     },
     render: function() {
+        var body = '';
         if(!this.state.isLoaded){
-          return (
-            <div>
+          body = 
+            <div id="content">
               <input ref="searchUser" id="user" placeholder="Testing" autoFocus={true} onKeyDown={this.handleNewTodoKeyDown} />
               <button type="button" onClick={this.handleButton}>Search</button>
-            </div>
-          );
+            </div>;
+        } else {
+          var incomplete = this.state.results.filter(function (todo) {
+            return (todo.status === "Incomplete");
+          });
+          var complete = this.state.results.filter(function (todo) {
+            return (todo.status === "Complete");
+          });
+          var incompleteItems = incomplete.map(function (todo) {
+            return (
+              <TodoItem key={todo.id} info={todo} />
+            );
+          }, this);
+          var completeItems = complete.map(function (todo) {
+            return (
+              <TodoItem key={todo.id} info={todo} />
+            );
+          }, this);
+          body =
+            <div id="content">
+              <button type="button" onClick={this.goBack}>Go Back</button>
+              <div id="TODO-Item">
+                {incompleteItems}
+                {completeItems}
+              </div>
+            </div>;
         }
-        var incomplete = this.state.results.filter(function (todo) {
-          return (todo.status === "Incomplete");
-        });
-        var complete = this.state.results.filter(function (todo) {
-          return (todo.status === "Complete");
-        });
-        var incompleteItems = incomplete.map(function (todo) {
-          return (
-            <TodoItem key={todo.id} info={todo} />
-          );
-        }, this);
-        var completeItems = complete.map(function (todo) {
-          return (
-            <TodoItem key={todo.id} info={todo} />
-          );
-        }, this);
-
         return (
-          <div>
-            <button type="button" onClick={this.goBack}>Go Back</button>
-            {incompleteItems}
-            {completeItems}
-          </div>
+          <section id="todoapp">
+            <div id="header">
+              <h1>
+                TODO List Application
+              </h1>
+            </div>
+            {body}
+          <footer>
+          test
+          </footer>
+          </section>
         );
     },
     getAll: function(username){
@@ -135,9 +144,9 @@ var TodoApp = React.createClass({
         });
       }.bind(this));
     },
-    renderList: function(){
-      return "<div>laoded</div>";
-    }
+    //renderList: function(){
+    //  return "<div>laoded</div>";
+    //}
 });
 
 React.render(<TodoApp />, document.body);
