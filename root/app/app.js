@@ -18,30 +18,30 @@ var TodoItem = React.createClass({
     //  });
     //router.init('/');
   },
-  getInitialState: function(){
-    return {
-      name: "Ryan"
-    };
-  },
+  //getInitialState: function(){
+  //  return {
+  //    name: "Ryan"
+  //  };
+  //},
   render: function() {
+          //<p>
+          //  {this.props.info.id}
+          //</p>
+          //<p>
+          //  {this.props.info.user}
+          //</p>
+          //<p>
+          //  {this.props.info.status}
+          //</p>
       return (
-        <div>
-          <p>
-            {this.props.info.id}
-          </p>
-          <p>
-            {this.props.info.user}
-          </p>
-          <p>
-            {this.props.info.status}
-          </p>
-          <p>
+        <tr>
+          <td>
             {this.props.info.description}
-          </p>
-          <p>
+          </td>
+          <td>
             {this.props.info.due_date}
-          </p>
-        </div>
+          </td>
+        </tr>
       );
   }
 });
@@ -111,12 +111,28 @@ var TodoApp = React.createClass({
               <TodoItem key={todo.id} info={todo} />
             );
           }, this);
+          $("#createDate").datepicker('setDate',  new Date());
           body =
             <div id="content">
               <button type="button" onClick={this.goBack}>Go Back</button>
+              <div id="createBar">
+                <input ref="createDecription" id="createDecription" placeholder="Description" autoFocus={true} onKeyDown={this.handleNewTodoKeyDown} />
+                <input ref="createDate" id="createDate" placeholder="Due Date" onKeyDown={this.handleNewTodoKeyDown} onFocus={this.openPicker} />
+                <button type="button" onClick={this.handleAdd}>Add Item</button>
+              </div>
               <div id="TODO-Item">
-                {incompleteItems}
-                {completeItems}
+                <table>
+                  <tr>
+                    <td>
+                      Description
+                    </td>
+                    <td>
+                      Due Date
+                    </td>
+                  </tr>
+                  {incompleteItems}
+                  {completeItems}
+                </table>
               </div>
             </div>;
         }
@@ -129,10 +145,24 @@ var TodoApp = React.createClass({
             </div>
             {body}
           <footer>
-          test
+            <span id="footerText">
+              TODO List Application
+            </span>
+            |
+            <span id="footerText">
+              By Ryan Warren
+            </span>
           </footer>
           </section>
         );
+    },
+    openPicker: function(){
+      console.log("focused");
+      $( "#createDate" ).datepicker({
+        minDate: 0,
+        changeMonth: true,
+        changeYear: true 
+      });
     },
     getAll: function(username){
       $.get(REQUEST_URL + GET_ALL + username, function(result) {
@@ -144,9 +174,9 @@ var TodoApp = React.createClass({
         });
       }.bind(this));
     },
-    //renderList: function(){
-    //  return "<div>laoded</div>";
-    //}
+    handleAdd: function(){
+      console.log("trying to add......");
+    }
 });
 
 React.render(<TodoApp />, document.body);
