@@ -5,6 +5,7 @@
 
 var REQUEST_URL = "http://todo.localhost/";
 var GET_ALL = "?type=getAll&user=";
+var ENTER_KEY = 13;
 
 var TodoItem = React.createClass({
   componentDidMount: function(){
@@ -56,12 +57,33 @@ var TodoApp = React.createClass({
         isLoaded: false
       };
     },
+    handleNewTodoKeyDown: function(event) {
+      if (event.which !== ENTER_KEY) {
+        return;
+      }
+      console.log("Testing the enter");
+      this.handleButton(event);
+
+    },
+    handleButton: function(event) {
+      console.log("Testing button press: " + event);
+      event.preventDefault();
+      var val = this.refs.searchUser.getDOMNode().value.trim();
+      console.log("the value: " + val);
+      this.getAll(val);
+
+    },
     render: function() {
         //return <TodoItem />
         //if(this.state.isLoaded){
         if(!this.state.isLoaded){
-          this.getAll();
-          return <div>Loading......</div>;
+          //this.getAll();
+          return (
+            <div>
+              <input ref="searchUser" id="user" placeholder="Testing" autoFocus={true} onKeyDown={this.handleNewTodoKeyDown} />
+              <button type="button" onClick={this.handleButton}>Search</button>
+            </div>
+          );
         }
           //{this.props.results.map(function(result) {
           //  return <ListItemWrapper key={result.id} data={result}/>;
@@ -94,8 +116,8 @@ var TodoApp = React.createClass({
           //<div>{this.renderList}</div>
         //return <div>Hello, world! {this.state.name}</div>;
     },
-    getAll: function(){
-      var username = "asdf";
+    getAll: function(username){
+      //var username = "asdf";
       $.get(REQUEST_URL + GET_ALL + username, function(result) {
       //$.getJSON(REQUEST_URL + GET_ALL + username, function(result) {
         console.log("here is the result: " + result);
