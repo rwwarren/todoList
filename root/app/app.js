@@ -67,11 +67,20 @@ var TodoApp = React.createClass({
     },
     handleButton: function(event) {
       console.log("Testing button press: " + event);
+      var username = this.refs.searchUser.getDOMNode().value.trim();
+      if(!username.length > 0){
+        return;
+      }
       event.preventDefault();
-      var val = this.refs.searchUser.getDOMNode().value.trim();
-      console.log("the value: " + val);
-      this.getAll(val);
+      console.log("the value: " + username);
+      this.getAll(username);
 
+    },
+    goBack: function(){
+      this.setState({
+        isLoaded: false,
+        results: ""
+      });
     },
     render: function() {
         //return <TodoItem />
@@ -85,10 +94,6 @@ var TodoApp = React.createClass({
             </div>
           );
         }
-          //{this.props.results.map(function(result) {
-          //  return <ListItemWrapper key={result.id} data={result}/>;
-          //})}
-
         var incomplete = this.state.results.filter(function (todo) {
           return (todo.status === "Incomplete");
         });
@@ -98,28 +103,25 @@ var TodoApp = React.createClass({
         //var main = this.state.results.map(function (todo) {
         var incompleteItems = incomplete.map(function (todo) {
           return (
-            <TodoItem info={todo} />
+            <TodoItem key={todo.id} info={todo} />
           );
         }, this);
         var completeItems = complete.map(function (todo) {
           return (
-            <TodoItem info={todo} />
+            <TodoItem key={todo.id} info={todo} />
           );
         }, this);
 
         return (
           <div>
+            <button type="button" onClick={this.goBack}>Go Back</button>
             {incompleteItems}
             {completeItems}
           </div>
         );
-          //<div>{this.renderList}</div>
-        //return <div>Hello, world! {this.state.name}</div>;
     },
     getAll: function(username){
-      //var username = "asdf";
       $.get(REQUEST_URL + GET_ALL + username, function(result) {
-      //$.getJSON(REQUEST_URL + GET_ALL + username, function(result) {
         console.log("here is the result: " + result);
         console.log("here is the result: " + JSON.stringify(result));
         this.setState({
@@ -127,18 +129,6 @@ var TodoApp = React.createClass({
           results: result
         });
       }.bind(this));
-      //fetch((REQUEST_URL + GET_ALL + username), {
-      //  method: 'GET'
-      //  })
-      //  .then((response) => response.json())
-      //  .then((responseData) => {
-      //    console.log("here is the result: " + responseData);
-      //    this.setState({
-      //      isLoaded: true,
-      //      responseData: responseData,
-      //    });
-      //  })
-      //  .done();
     },
     renderList: function(){
       return "<div>laoded</div>";
