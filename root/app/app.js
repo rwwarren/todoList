@@ -6,6 +6,7 @@
 var REQUEST_URL = "http://todo.localhost/";
 var GET_ALL = "?type=getAll&user=";
 var ENTER_KEY = 13;
+var LOCAL_KEY = "lookup-user";
 
 var TodoItem = React.createClass({
   componentDidMount: function(){
@@ -57,6 +58,13 @@ var TodoApp = React.createClass({
         isLoaded: false
       };
     },
+    componentDidMount: function(){
+        //localStorage.setItem("test", "asdf");
+        var storedName = localStorage.getItem(LOCAL_KEY);
+        if(storedName.length > 0){
+          this.getAll(storedName);
+        }
+    },
     handleNewTodoKeyDown: function(event) {
       if (event.which !== ENTER_KEY) {
         return;
@@ -72,21 +80,26 @@ var TodoApp = React.createClass({
         return;
       }
       event.preventDefault();
+      localStorage.setItem(LOCAL_KEY, username);
       console.log("the value: " + username);
       this.getAll(username);
 
     },
     goBack: function(){
+      localStorage.removeItem(LOCAL_KEY);
       this.setState({
         isLoaded: false,
         results: ""
       });
     },
     render: function() {
-        //return <TodoItem />
-        //if(this.state.isLoaded){
+        //localStorage.setItem("test", "asdf");
+        //var storedName = localStorage.getItem("test");
+        //if(!this.state.isLoaded && storedName.length > 0) {
+        //  console.log(storedName);
+        //  this.getAll(storedName);
+        //} else if(!this.state.isLoaded){
         if(!this.state.isLoaded){
-          //this.getAll();
           return (
             <div>
               <input ref="searchUser" id="user" placeholder="Testing" autoFocus={true} onKeyDown={this.handleNewTodoKeyDown} />
@@ -100,7 +113,6 @@ var TodoApp = React.createClass({
         var complete = this.state.results.filter(function (todo) {
           return (todo.status === "Complete");
         });
-        //var main = this.state.results.map(function (todo) {
         var incompleteItems = incomplete.map(function (todo) {
           return (
             <TodoItem key={todo.id} info={todo} />
