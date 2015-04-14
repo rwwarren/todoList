@@ -88,3 +88,38 @@ footer #footerText {
   border-left: 1px solid #ededed;
   width: 25%;
 }
+
+td.complete {
+  color: #d9d9d9;
+  text-decoration: line-through;
+}
+
+.filtering:hover {
+  border: 1px solid #d9d9d9;
+  border-radius: 3px;
+}
+
+#view-links {
+  vertical-align: middle;
+}
+
+.filtering {
+  padding: 5px;
+  display: inline-block;
+  /*
+  clear:both;
+  float:left;
+  */
+}
+
+.filtering:active {
+  border: 1px solid #4d4d4d;
+  border-radius: 3px;
+}
+
+.active {
+  padding: 5px;
+  display: inline-block;
+  border: 1px solid #4d4d4d;
+  border-radius: 3px;
+}
