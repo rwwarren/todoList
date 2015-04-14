@@ -73,6 +73,7 @@ var TodoApp = React.createClass({
       localStorage.removeItem(LOCAL_KEY);
       this.setState({
         isLoaded: false,
+        username: "",
         results: ""
       });
     },
@@ -109,8 +110,9 @@ var TodoApp = React.createClass({
             <div id="content">
               <button id="backButton" type="button" onClick={this.goBack}>Go Back</button>
               <div id="createBar">
-                <input ref="createDecription" className="inputBox" id="createDecription" placeholder="Description" autoFocus={true} onKeyDown={this.handleNewTodoKeyDown} />
-                <input ref="createDate" className="inputBox" id="createDate" placeholder="Due Date" onKeyDown={this.handleNewTodoKeyDown} onFocus={this.openPicker} />
+                Create Task: 
+                <input ref="createDescription" className="inputBox" id="createDescription" placeholder="Description" autoFocus={true} onKeyDown={this.handleNewTodoKeyDown} />
+                <input ref="createDate" className="inputDate" id="createDate" placeholder="Due Date" onKeyDown={this.handleNewTodoKeyDown} onFocus={this.openPicker} />
                 <button id="addButton" type="button" onClick={this.handleAdd}>Add Item</button>
               </div>
               <div id="TODO-Item">
@@ -175,7 +177,13 @@ var TodoApp = React.createClass({
         changeYear: true 
       });
     },
-    getAll: function(username){
+    getAll: function(username) {
+      if(username.length < 1) {
+        username = this.state.username;
+      }
+      if(username.length < 1) {
+        return;
+      }
       $.get(REQUEST_URL + GET_ALL + username, function(result) {
         console.log("here is the result: " + result);
         console.log("here is the result: " + JSON.stringify(result));
@@ -203,22 +211,17 @@ var TodoApp = React.createClass({
 
     },
     handleAdd: function(){
-      console.log("trying to add......");
-      var description = this.refs.createDecription.getDOMNode().value.trim();
+      var description = this.refs.createDescription.getDOMNode().value.trim();
       var date = this.refs.createDate.getDOMNode().value.trim();
-      //var data = JSON.stringify({
-      //  description: description,
-      //  date: date
-      //});
       var data = {description: description, date: date};
-      $.post(REQUEST_URL + CREATE + this.state.username, data, function(result) {
+      var posting = $.post(REQUEST_URL + CREATE + this.state.username, data, function(result) {
         console.log("here is the result: " + result);
         console.log("here is the result: " + JSON.stringify(result));
       }.bind(this));
-        //this.setState({
-        //  isLoaded: true,
-        //  results: result
-        //});
+      var testing = 'asdf';
+      posting.done( testing, function( data, testing) {
+        this.getAll(this.state.username);
+      }.bind(this));
     }
 });
 

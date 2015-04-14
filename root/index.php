@@ -87,11 +87,10 @@ function getIncomplete(){
 function createTask(){
       //post
       $user = $_GET['user'];
-      $status = isset($_POST['status']) ? $_POST['status'] : "Incomplete";
-      $desc = isset($_POST['description']) ? $_POST['description'] : "Testing";
+      $status = isset($_POST['status']) && strlen($_POST['status']) > 0 ? $_POST['status'] : "Incomplete";
+      $desc = isset($_POST['description']) && strlen($_POST['description']) > 0 ? $_POST['description'] : "Testing";
       $date = date('Y-m-d', strtotime('+5 days'));
-      $due = isset($_POST['date']) && strlen($_POST['date'] > 1) ? date('Y-m-d', strtotime($_POST['date'])) : date('Y-m-d', strtotime('+5 days'));
-      //$due = isset($_GET['due']) ? $_GET['due'] : $date;
+      $due = isset($_POST['date']) && strlen($_POST['date']) > 0 ? date('Y-m-d', strtotime($_POST['date'])) : date('Y-m-d', strtotime('+5 days'));
       $mysqli = new mysqli("localhost", "write", "PASSWORD", "TasksDB");
       $stmt = $mysqli->prepare("INSERT INTO TodoList VALUES(DEFAULT, ?, ?, ?, ?)");
       $stmt->bind_param('ssss', $user, $status, $desc, $due);
