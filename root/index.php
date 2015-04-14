@@ -26,7 +26,7 @@ function getAll(){
       $mysqli = new mysqli("localhost", "write", "PASSWORD", "TasksDB");
       //$stmt = $this->mysqli->prepare("Select ID from Users where Username = ? and AuthyID = ? and IsActive = 1 LIMIT 1");
       //incomplete status then soonest due date
-      $stmt = $mysqli->prepare("SELECT id, user, status, description, due_date from TodoList where user = ? ORDER BY status DESC, DATE(due_date) ASC");
+      $stmt = $mysqli->prepare("SELECT id, user, status, description, DATE_FORMAT(due_date, \"%M %e, %Y\") from TodoList where user = ? ORDER BY status DESC, DATE(due_date) ASC");
       $stmt->bind_param('s', $user);
       $stmt->execute();
       $stmt->bind_result($id, $user, $status, $desc, $due);
@@ -57,7 +57,7 @@ function getIncomplete(){
       $user = $_GET['user'];
       $mysqli = new mysqli("localhost", "write", "PASSWORD", "TasksDB");
       //$stmt = $this->mysqli->prepare("Select ID from Users where Username = ? and AuthyID = ? and IsActive = 1 LIMIT 1");
-      $stmt = $mysqli->prepare("SELECT id, user, status, description, due_date from TodoList where user = ? and status = 'Incomplete' ORDER BY DATE(due_date) ASC");
+      $stmt = $mysqli->prepare("SELECT id, user, status, description, DATE_FORMAT(due_date, \"%M %e, %Y\") from TodoList where user = ? and status = 'Incomplete' ORDER BY DATE(due_date) ASC");
       //$stmt = $mysqli->prepare("SELECT user, status, description, due_date from TodoList where user = ? and status = 'Incomplete' ORDER BY due_date DESC");
       $stmt->bind_param('s', $user);
       $stmt->execute();
@@ -85,28 +85,20 @@ function getIncomplete(){
 }
 
 function createTask(){
+      //post
       $user = $_GET['user'];
-      $status = isset($_GET['status']) ? $_GET['status'] : "Incomplete";
-      $desc = isset($_GET['description']) ? $_GET['description'] : "Testing";
-      $date = date('Y-m-d H:i:s', strtotime('+5 days'));
-      //$date = date('Y-m-d', strtotime('+5 days'));
-      $due = isset($_GET['due']) ? $_GET['due'] : $date;
+      $status = isset($_POST['status']) ? $_POST['status'] : "Incomplete";
+      $desc = isset($_POST['description']) ? $_POST['description'] : "Testing";
+      $date = date('Y-m-d', strtotime('+5 days'));
+      $due = isset($_POST['date']) && strlen($_POST['date'] > 1) ? date('Y-m-d', strtotime($_POST['date'])) : date('Y-m-d', strtotime('+5 days'));
+      //$due = isset($_GET['due']) ? $_GET['due'] : $date;
       $mysqli = new mysqli("localhost", "write", "PASSWORD", "TasksDB");
-      //$stmt = $this->mysqli->prepare("Select ID from Users where Username = ? and AuthyID = ? and IsActive = 1 LIMIT 1");
-      //$stmt = $mysqli->prepare("INSERT INTO TodoList VALUES(?, ?, ?, ?)");
-      //$stmt->bind_param('ssbb', $user, $status, $desc, $due);
-      //$stmt = $mysqli->prepare("INSERT INTO TodoList VALUES(DEFAULT, ?, '', '', DEFAULT)");
-      //$stmt->bind_param('s', $user);
       $stmt = $mysqli->prepare("INSERT INTO TodoList VALUES(DEFAULT, ?, ?, ?, ?)");
       $stmt->bind_param('ssss', $user, $status, $desc, $due);
-      //$stmt->bind_param('ssbs', $user, $status, $desc, $due);
       $stmt->execute();
-      //$stmt->bind_result($user, $status, $desc, $due);
       $results = $stmt->fetch();
       $stmt->free_result();
       $stmt->close();
-      //echo "results: <br>";
-      //print_r($results);
       $result = array("Results" => array("Status" => "Creation Complete", "Username" => $user, "Task Status" => $status, "Description" => $desc, "Due Date" => $due));
       header("HTTP/1.0 200 Success");
       header('Content-Type: application/json');

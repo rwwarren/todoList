@@ -63,6 +63,47 @@ footer #footerText {
   margin-right: 10px;
   width: 100%;
 }
+
+#search {
+  padding: 15px;
+}
+
+.inputBox {
+  width: 350px;
+  height: 30px;
+  font-size: 24px;
+  margin-right: 5px;
+  display: inline-block;
+}
+
+#submitButton {
+  margin-left: 20px;
+  width: 100px;
+  height: 35px;
+  padding: 0;
+  display: inline-block;
+}
+
+#addButton {
+  width: 100px;
+  height: 35px;
+  float: right;
+}
+
+#backButton {
+  margin-top: 10px;
+  margin-right: 15px;
+  width: 100px;
+  height: 35px;
+  float: right;
+}
+
+#createBar {
+  display: inline-block;
+  margin-top: 10px;
+  margin-left: 15px;
+}
+
 #createDate {
   /*
   font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
@@ -71,7 +112,7 @@ footer #footerText {
   */
 }
 
-.view table {
+.view table, table {
   border-spacing: 0;
   width: 100%;
 }

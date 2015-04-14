@@ -5,6 +5,7 @@
 
 var REQUEST_URL = "http://todo.localhost/";
 var GET_ALL = "?type=getAll&user=";
+var CREATE = "?type=create&user=";
 var ENTER_KEY = 13;
 var LOCAL_KEY = "lookup-user";
 
@@ -38,6 +39,7 @@ var TodoApp = React.createClass({
       return {
         toShow: "all",
         results: "",
+        username: "",
         isLoaded: false
       };
     },
@@ -79,8 +81,10 @@ var TodoApp = React.createClass({
         if(!this.state.isLoaded){
           body = 
             <div id="content">
-              <input ref="searchUser" id="user" placeholder="Testing" autoFocus={true} onKeyDown={this.handleNewTodoKeyDown} />
-              <button type="button" onClick={this.handleButton}>Search</button>
+              <div id="search">
+                <input ref="searchUser" id="user" className="inputBox" type="text" placeholder="Enter username to search" autoFocus={true} onKeyDown={this.handleNewTodoKeyDown} />
+                <button type="button" id="submitButton" onClick={this.handleButton}>Search</button>
+              </div>
             </div>;
         } else {
           var toShow = this.state.toShow;
@@ -103,11 +107,11 @@ var TodoApp = React.createClass({
           $("#createDate").datepicker('setDate',  new Date());
           body =
             <div id="content">
-              <button type="button" onClick={this.goBack}>Go Back</button>
+              <button id="backButton" type="button" onClick={this.goBack}>Go Back</button>
               <div id="createBar">
-                <input ref="createDecription" id="createDecription" placeholder="Description" autoFocus={true} onKeyDown={this.handleNewTodoKeyDown} />
-                <input ref="createDate" id="createDate" placeholder="Due Date" onKeyDown={this.handleNewTodoKeyDown} onFocus={this.openPicker} />
-                <button type="button" onClick={this.handleAdd}>Add Item</button>
+                <input ref="createDecription" className="inputBox" id="createDecription" placeholder="Description" autoFocus={true} onKeyDown={this.handleNewTodoKeyDown} />
+                <input ref="createDate" className="inputBox" id="createDate" placeholder="Due Date" onKeyDown={this.handleNewTodoKeyDown} onFocus={this.openPicker} />
+                <button id="addButton" type="button" onClick={this.handleAdd}>Add Item</button>
               </div>
               <div id="TODO-Item">
                 <table className="view">
@@ -177,6 +181,7 @@ var TodoApp = React.createClass({
         console.log("here is the result: " + JSON.stringify(result));
         this.setState({
           isLoaded: true,
+          username: username,
           results: result
         });
       }.bind(this));
@@ -199,6 +204,21 @@ var TodoApp = React.createClass({
     },
     handleAdd: function(){
       console.log("trying to add......");
+      var description = this.refs.createDecription.getDOMNode().value.trim();
+      var date = this.refs.createDate.getDOMNode().value.trim();
+      //var data = JSON.stringify({
+      //  description: description,
+      //  date: date
+      //});
+      var data = {description: description, date: date};
+      $.post(REQUEST_URL + CREATE + this.state.username, data, function(result) {
+        console.log("here is the result: " + result);
+        console.log("here is the result: " + JSON.stringify(result));
+      }.bind(this));
+        //this.setState({
+        //  isLoaded: true,
+        //  results: result
+        //});
     }
 });
 
