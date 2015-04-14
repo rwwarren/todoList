@@ -101,7 +101,6 @@ var TodoApp = React.createClass({
             );
           }, this);
           $("#createDate").datepicker('setDate',  new Date());
-          $("#viewComplete").click(function(){ console.log("clicked"); this.handleViewAmount(); return false; });
           body =
             <div id="content">
               <button type="button" onClick={this.goBack}>Go Back</button>
@@ -112,16 +111,20 @@ var TodoApp = React.createClass({
               </div>
               <div id="TODO-Item">
                 <table className="view">
-                  <tr>
-                    <th>
-                      Description
-                    </th>
-                    <th>
-                      Due Date
-                    </th>
-                  </tr>
-                  {toShow === "all" || toShow === "incomplete"  ? incompleteItems : null}
-                  {toShow === "all" || toShow === "complete"  ? completeItems : null}
+                  <thead>
+                    <tr>
+                      <th>
+                        Description
+                      </th>
+                      <th>
+                        Due Date
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {toShow === "all" || toShow === "incomplete"  ? incompleteItems : null}
+                    {toShow === "all" || toShow === "complete"  ? completeItems : null}
+                  </tbody>
                 </table>
               </div>
               <div id="information">
@@ -187,8 +190,11 @@ var TodoApp = React.createClass({
       $('#' + oldId).addClass('filtering');
       $('#' + divId).addClass('active');
       $('#' + divId).removeClass('filtering');
-      console.log("trying" + this);
-      //this.setState({toShow: "complete"});
+      var showArr = divId.split("-");
+      var whatToShow = showArr[1];
+      this.setState({
+        toShow: whatToShow
+      });
 
     },
     handleAdd: function(){
