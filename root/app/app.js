@@ -18,21 +18,7 @@ var TodoItem = React.createClass({
     //  });
     //router.init('/');
   },
-  //getInitialState: function(){
-  //  return {
-  //    name: "Ryan"
-  //  };
-  //},
   render: function() {
-          //<p>
-          //  {this.props.info.id}
-          //</p>
-          //<p>
-          //  {this.props.info.user}
-          //</p>
-          //<p>
-          //  {this.props.info.status}
-          //</p>
       return (
         <tr>
           <td>
@@ -121,14 +107,14 @@ var TodoApp = React.createClass({
                 <button type="button" onClick={this.handleAdd}>Add Item</button>
               </div>
               <div id="TODO-Item">
-                <table>
+                <table className="view">
                   <tr>
-                    <td>
+                    <th>
                       Description
-                    </td>
-                    <td>
+                    </th>
+                    <th>
                       Due Date
-                    </td>
+                    </th>
                   </tr>
                   {incompleteItems}
                   {completeItems}

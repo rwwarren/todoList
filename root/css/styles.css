@@ -70,3 +70,21 @@ footer #footerText {
   background-color: #000000;
   */
 }
+
+.view table {
+  border-spacing: 0;
+  width: 100%;
+}
+
+.view td, .view th {
+  text-align: left;
+  border-bottom: 1px solid #ededed;
+  padding-top: 7px;
+  padding-left: 7px;
+  padding-bottom: 7px;
+}
+
+.view td:last-child {
+  border-left: 1px solid #ededed;
+  width: 25%;
+}
