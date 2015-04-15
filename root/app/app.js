@@ -3,7 +3,7 @@
  */
 "use strict";
 
-var REQUEST_URL = "http://todo.localhost/";
+var REQUEST_URL = "http://todo.localhost/api";
 var GET_ALL = "?type=getAll&user=";
 var CREATE = "?type=create&user=";
 var EDIT = "?type=edit&user=";
