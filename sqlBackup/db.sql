@@ -27,9 +27,9 @@ CREATE TABLE `TodoList` (
   `user` varchar(20) NOT NULL,
   `status` varchar(15) NOT NULL DEFAULT 'Incomplete',
   `description` text,
-  `due_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `due_date` date DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,7 +38,7 @@ CREATE TABLE `TodoList` (
 
 LOCK TABLES `TodoList` WRITE;
 /*!40000 ALTER TABLE `TodoList` DISABLE KEYS */;
-INSERT INTO `TodoList` VALUES (1,'asdf','Complete','','2015-03-28 05:33:29'),(2,'asdf','Incomplete','','2015-04-02 05:19:53'),(3,'asdf','Incomplete','Testing','2015-04-02 05:20:57'),(4,'asdf1','Incomplete','Testing','2015-04-02 05:27:26');
+INSERT INTO `TodoList` VALUES (1,'asdf','Incomplete','This is a really long task. It has a lot of information about what the person should do because that makes it useful. I would like it do be done ASAP.','2015-04-13'),(2,'asdf','Complete','Reallyasdfasdf Lost','2015-04-21'),(3,'asdf','Incomplete','Testing','2015-04-01'),(4,'asdf1','Complete','Testing','2015-04-01'),(5,'asdf1','Complete','Testing','2015-04-02'),(6,'asdf1','Complete','Testing','2015-03-28'),(7,'asdf','Incomplete','Testing this thing sure sucks','2015-04-01'),(59,'asdf','Complete','this one','2015-04-22'),(60,'asdf','Incomplete','tests','2015-04-01'),(61,'asdf','Complete','tests22','2015-04-23'),(62,'asdf','Incomplete','Create!','2015-04-21'),(63,'asdf','Incomplete','Create!','2015-04-21'),(64,'asdf','Incomplete','Created','2015-04-20'),(65,'asdf','Incomplete','asdf','2015-04-15'),(66,'ryan','Incomplete','Testing','2015-04-22');
 /*!40000 ALTER TABLE `TodoList` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -51,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-03-28  1:17:38
+-- Dump completed on 2015-04-15  0:41:31

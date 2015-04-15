@@ -152,6 +152,9 @@ var TodoApp = React.createClass({
           body =
             <div id="content">
               <button id="backButton" type="button" onClick={this.goBack}>Go Back</button>
+              <div id="username">
+                Todo List for: {this.state.username}
+              </div>
               <div id="createBar">
                 Create Task: 
                 <input ref="createDescription" className="inputBox" id="createDescription" placeholder="Description" autoFocus={true} onKeyDown={this.handleNewTodoKeyDown} />

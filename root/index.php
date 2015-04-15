@@ -38,7 +38,6 @@ function getAll(){
       $stmt->free_result();
       $stmt->close();
       echo json_encode($result, true);
-
 }
 
 function getIncomplete(){
