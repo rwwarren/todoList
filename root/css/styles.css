@@ -128,14 +128,41 @@ footer #footerText {
   padding-bottom: 7px;
 }
 
+.view td:first-child {
+  border-right: 1px solid #ededed;
+  width: 15%;
+}
+
+.changes {
+  float: left;
+  clear: both;
+}
+
+.changeButtons {
+  float: left;
+  clear: both;
+  margin-right: 15px;
+  display: inline-block;
+  padding: 0;
+}
+
+.changeBox {
+  float: right;
+  margin-right: 15px;
+}
+
 .view td:last-child {
   border-left: 1px solid #ededed;
-  width: 25%;
+  width: 20%;
 }
 
 td.complete {
   color: #d9d9d9;
   text-decoration: line-through;
+}
+
+tr:hover {
+  background-color: #ffff99;
 }
 
 .filtering:hover {

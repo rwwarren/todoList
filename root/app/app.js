@@ -6,28 +6,72 @@
 var REQUEST_URL = "http://todo.localhost/";
 var GET_ALL = "?type=getAll&user=";
 var CREATE = "?type=create&user=";
+var EDIT = "?type=edit&user=";
 var ENTER_KEY = 13;
 var LOCAL_KEY = "lookup-user";
 
 var TodoItem = React.createClass({
-  componentDidMount: function(){
+  getInitialState: function() {
+    return {
+      isDone: this.props.isDone,
+      desc: this.props.info.description,
+      due: this.props.info.due_date
+    };
+  },
+  cancelChanges: function(){
+    this.setState({
+      isDone: this.props.isDone,
+      desc: this.props.info.description,
+      due: this.props.info.due_date
+    });
+  },
+  submitChanges: function(){
+      var statusString = this.state.isDone ? "Complete" : "Incomplete";
+      var data = {id: this.props.info.id, status: statusString, description: this.state.desc, due_date: this.state.due};
+      var posting = $.post(REQUEST_URL + EDIT + this.props.info.user, data, function(result) {
+        this.props.isUpdated();
+      }.bind(this));
 
-    //var router = Router({
-    //    '/': setState.bind(this, {nowShowing: app.ALL_TODOS}),
-    //      '/active': setState.bind(this, {nowShowing: app.ACTIVE_TODOS}),
-    //      '/completed': setState.bind(this, {nowShowing: app.COMPLETED_TODOS})
-    //  });
-    //router.init('/');
+  },
+  handleDesc: function(){
+    var currentText = $('#' + this.props.info.id + "-desc").text();
+    this.setState({desc: currentText});
+  },
+  handleDate: function(){
+    var currentText = $('#' + this.props.info.id + "-date").text();
+    this.setState({due: currentText});
+  },
+  handleMark: function(){
+    this.setState({isDone: !this.state.isDone});
+  },
+  isChanged: function() {
+    if(this.props.isDone !== this.state.isDone || this.props.info.description !== this.state.desc || this.props.info.due_date !== this.state.due){
+      return (
+          <div className="changeButtons">
+            <button className="changes" type="button" onClick={this.submitChanges}>Submit Changes</button>
+            <button className="changes" type="button" onClick={this.cancelChanges}>Cancel Changes</button>
+          </div>
+      );
+    }
+    return null;
   },
   render: function() {
       var trType = this.props.isDone ? "complete" : "incomplete";
       return (
         <tr>
           <td className={trType}>
-            {this.props.info.description}
+            {this.isChanged()}
+            <input className="changeBox" type="checkbox" checked={this.state.isDone} onChange={this.handleMark}/>
           </td>
           <td className={trType}>
-            {this.props.info.due_date}
+            <label id={this.props.info.id + "-desc"} contentEditable={true} onInput={this.handleDesc}>
+                {this.state.desc} 
+            </label>
+          </td>
+          <td className={trType}>
+            <label id={this.props.info.id + "-date"} className="due" contentEditable={true} onInput={this.handleDate}>
+              {this.state.due}
+            </label>
           </td>
         </tr>
       );
@@ -53,12 +97,9 @@ var TodoApp = React.createClass({
       if (event.which !== ENTER_KEY) {
         return;
       }
-      console.log("Testing the enter");
       this.handleButton(event);
-
     },
     handleButton: function(event) {
-      console.log("Testing button press: " + event);
       var username = this.refs.searchUser.getDOMNode().value.trim();
       if(!username.length > 0){
         return;
@@ -67,7 +108,6 @@ var TodoApp = React.createClass({
       localStorage.setItem(LOCAL_KEY, username);
       console.log("the value: " + username);
       this.getAll(username);
-
     },
     goBack: function(){
       localStorage.removeItem(LOCAL_KEY);
@@ -76,6 +116,9 @@ var TodoApp = React.createClass({
         username: "",
         results: ""
       });
+    },
+    handleUpdate: function() {
+      this.getAll(this.state.username);
     },
     render: function() {
         var body = '';
@@ -97,12 +140,12 @@ var TodoApp = React.createClass({
           });
           var incompleteItems = incomplete.map(function (todo) {
             return (
-              <TodoItem key={todo.id} info={todo} isDone={false} />
+              <TodoItem key={todo.id} info={todo} isDone={false} isUpdated={this.handleUpdate} />
             );
           }, this);
           var completeItems = complete.map(function (todo) {
             return (
-              <TodoItem key={todo.id} info={todo} isDone={true} />
+              <TodoItem key={todo.id} info={todo} isDone={true} isUpdated={this.handleUpdate} />
             );
           }, this);
           $("#createDate").datepicker('setDate',  new Date());
@@ -119,6 +162,9 @@ var TodoApp = React.createClass({
                 <table className="view">
                   <thead>
                     <tr>
+                      <th>
+                        Change Status
+                      </th>
                       <th>
                         Description
                       </th>
@@ -185,8 +231,6 @@ var TodoApp = React.createClass({
         return;
       }
       $.get(REQUEST_URL + GET_ALL + username, function(result) {
-        console.log("here is the result: " + result);
-        console.log("here is the result: " + JSON.stringify(result));
         this.setState({
           isLoaded: true,
           username: username,
@@ -208,18 +252,12 @@ var TodoApp = React.createClass({
       this.setState({
         toShow: whatToShow
       });
-
     },
     handleAdd: function(){
       var description = this.refs.createDescription.getDOMNode().value.trim();
       var date = this.refs.createDate.getDOMNode().value.trim();
       var data = {description: description, date: date};
       var posting = $.post(REQUEST_URL + CREATE + this.state.username, data, function(result) {
-        console.log("here is the result: " + result);
-        console.log("here is the result: " + JSON.stringify(result));
-      }.bind(this));
-      var testing = 'asdf';
-      posting.done( testing, function( data, testing) {
         this.getAll(this.state.username);
       }.bind(this));
     }
